@@ -59,11 +59,12 @@ public class BoardController {
 			RedirectAttributes r) throws Exception {
 		board.setVisitDate(visitdate);
 
-		if (file != null) {
+		if (file != null && !file.getOriginalFilename().trim().equals("")) {
+			System.out.println("file.." + file.getOriginalFilename());
 			String newFilename = uploadFile(file.getOriginalFilename(), file.getBytes());
 			board.setPic(newFilename);
 			model.addAttribute("newFilename", newFilename);
-			System.out.println("file..");
+
 		}
 
 		service.register(board);
@@ -153,8 +154,12 @@ public class BoardController {
 	}
 
 	private String getNewFilename(String filename) {
-		String ext = filename.substring(filename.indexOf('.'));
-		return UUID.randomUUID().toString() + ext;
+		if (filename.contains(".")) {
+			String ext = filename.substring(filename.indexOf('.'));
+			return UUID.randomUUID().toString() + ext;
+
+		}
+		return null;
 	}
 
 	@ResponseBody

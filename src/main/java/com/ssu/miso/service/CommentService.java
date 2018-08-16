@@ -8,6 +8,8 @@ public interface CommentService {
 
 	public List<CommentVO> list(Integer bno) throws Exception;
 
+	public CommentVO search(Integer cno) throws Exception;
+
 	public int create(CommentVO vo) throws Exception;
 
 	public int update(CommentVO vo) throws Exception;

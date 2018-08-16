@@ -17,6 +17,11 @@ public class CommentServiceImpl implements CommentService {
 	public List<CommentVO> list(Integer bno) throws Exception {
 		return commentMapper.list(bno);
 	}
+	
+	@Override
+	public CommentVO search(Integer cno) throws Exception {
+		return commentMapper.search(cno);
+	}
 
 	@Override
 	public int create(CommentVO vo) throws Exception {

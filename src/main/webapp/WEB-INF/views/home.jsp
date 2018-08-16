@@ -133,7 +133,7 @@ img:before, img:after, #miso_explain:before, #miso_explain:after {
 				진행가능 기간: <br>2018.4.16.(월) ~ 2019.1.31.(목)<br> [주말 및 공휴일은
 				진행하지 않음] <br> <br> 3. 진행가능 시간:<br> 학기 중 10:00 ~ /
 				14:00 ~ 방학 중 10:30 ~ / 14:30 ~<br> <br> 4. 진행자:<br>
-				본교 홍보대사 ‘미소’ [홍보대사 보기]<br> <br> 5. 진행시간: 2시간 이내<br> <br>
+				본교 홍보대사 ‘미소’ <br> <br> 5. 진행시간: 2시간 이내<br> <br>
 				6. 문의:<br> 입학관리팀 02-820-0050~0054 / Fax: 02-820-0022<br>
 			</div>
 		</div>
@@ -173,7 +173,7 @@ img:before, img:after, #miso_explain:before, #miso_explain:after {
 					신청인원 <input type="number" placeholder="신청인원" name="pnum">
 				</div>
 				<div class="submit_btn">
-					<button id="reqTour" type="button">신청하기</button>
+					<button id="reqTour" class="btn btn-warning btn-lg btn-block" type="button">신청하기</button>
 				</div>
 			</form>
 		</div>

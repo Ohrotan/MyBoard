@@ -11,7 +11,7 @@
 .album {
 	margin: 20px auto;
 	width: 1000px;
-	border: 2px solid #2196F3;
+	border: 2px solid #006;
 	border-radius: 30px;
 }
 
@@ -112,16 +112,16 @@ button:hover {
 
 			<div class="btn_box">
 				<div>
-					<button type="button" id="albumList">목록보기</button>
+					<button type="button" class="btn btn-primary" id="albumList">목록보기</button>
 				</div>
 
 				<c:if test="${sessionScope.member.authority == 1}">
 
 					<div>
-						<button type="button" id="delete" value="${boardVO.bno}">삭제하기</button>
+						<button type="button" id="delete" class="btn btn-danger" value="${boardVO.bno}">삭제하기</button>
 					</div>
 					<div>
-						<button type="button" id="update">수정하기</button>
+						<button type="button" class="btn btn-warning" id="update">수정하기</button>
 					</div>
 				</c:if>
 			</div>
@@ -137,8 +137,8 @@ button:hover {
 			<input type='hidden' name='searchType' value="${cri.searchType }">
 			<input type='hidden' name='keyword' value="${cri.keyword }">
 		</form>
-		<jsp:include page="comment.jsp"></jsp:include>
-
+			<jsp:include page="comment.jsp"></jsp:include>
+		
 	</div>
 </body>
 <script>

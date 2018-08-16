@@ -11,7 +11,7 @@
 	margin: auto;
 	width: 1000px;
 	height: 625px;
-	border: 2px solid #2196F3;
+	border: 2px solid #006;
 	border-radius: 30px;
 }
 
@@ -71,10 +71,10 @@ button:hover {
 
 				</select> <input type="text" name="keyword" id="keywordInput"
 					value='${cri.keyword }'>
-				<button id="searchBtn" type="button">Search</button>
+				<button id="searchBtn" class="btn btn-primary" type="button">Search</button>
 				<c:if test="${sessionScope.member.authority==1 }">
 					<div style="width: 100px; float: right;">
-						<button id="write">글쓰기</button>
+						<button id="write" class="btn btn-primary">글쓰기</button>
 					</div>
 				</c:if>
 			</div>

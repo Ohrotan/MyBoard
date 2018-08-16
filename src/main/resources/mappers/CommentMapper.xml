@@ -9,6 +9,11 @@
 		WHERE bno=#{bno}
 		ORDER BY cno DESC
 	</select>
+	<select id="search" resultType="com.ssu.miso.vo.CommentVO">
+		SELECT * FROM tbl_comment
+		WHERE cno=#{cno}
+
+	</select>
 
 
 	<insert id="create">

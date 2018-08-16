@@ -8,7 +8,8 @@
 .album {
 	margin: auto;
 	width: 1000px;
-	background: #d6edff;
+	border: 2px solid #006;
+	border-radius:10px;
 	height: 600px
 }
 
@@ -81,7 +82,7 @@ button:hover {
 
 			</div>
 			<div style="width: 100px; float: right;">
-				<button id="write" type="submit">올리기</button>
+				<button id="write" type="submit" class="btn btn-primary">올리기</button>
 			</div>
 		</form>
 	</div>

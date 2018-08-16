@@ -25,20 +25,22 @@
 							<td>${cVO.regdate }</td>
 							<c:if
 								test="${(sessionScope.member.id==cVO.id)||(sessionScope.member.authority==1)}">
-								<td>${sessionScope.member.id},${cVO.id }
-								<button type="button" id="cmt_update"
-										value="${cVO.cno}">수정</button>
-									<button type="button" id="cmt_delete" value="${cVO.cno}">삭제</button></td>
+								<td>
+									<button type="button"
+										onclick="update(${cVO.cno},'${cVO.content }')" class="btn btn-warning"
+										>수정</button>
+									<button type="button" onclick="deleteCmt(${cVO.cno})" value="${cVO.cno}" class="btn btn-danger">삭제</button>
+								</td>
 							</c:if>
 						</tr>
 					</c:forEach>
 				</tbody>
-		
+
 				<c:if test="${sessionScope.member!=null}">
 					<tr>
 						<td>${sessionScope.member.name}</td>
-						<td><textarea></textarea></td>
-						<td><button type="button" id="cmt_reg">댓글달기</button></td>
+						<td><textarea id="content"></textarea></td>
+						<td><button type="button" id="cmt_reg" class="btn btn-primary">댓글달기</button></td>
 
 					</tr>
 				</c:if>
@@ -46,7 +48,7 @@
 					<tr>
 						<td>비회원</td>
 						<td><textarea disabled>회원만 댓글을 달 수 있습니다. 로그인 해주세요!</textarea></td>
-						<td><button type="button" disabled="disabled">댓글달기</button></td>
+						<td><button type="button" disabled="disabled" class="btn btn-primary">댓글달기</button></td>
 
 					</tr>
 				</c:if>
@@ -55,54 +57,76 @@
 	</form>
 </body>
 <script>
+var updateCno;
+	var update = function(cno,content) {
+		alert(cno);
+		$('#content').text(content);
+		updateCno=cno;
+		location.href='#content';
+	}
+	
+	var deleteCmt = function(cmt) {
+		location.href = "/miso/comment/delete/"
+				+ cmt;
+	}
+	
 	$(document)
 			.ready(
 					function() {
+
 						var formObj = $("form[role='form']");
 
 						$('#cmt_reg').on('click', function() {
 							var obj = $('#cmt_form').serialize();
+if(updateCno!=null){
+	$.ajax({
+		method : 'post',
+		url : '/miso/comment/update',
+		headers : {
+			"Content-type" : "application/json",
+		},
+		data : JSON.stringify({
+			cno: updateCno,
+			bno : '${boardVO.bno}',
+			content : $('#content').val(),
+			name : '${sessionScope.member.name}',
+			id : '${sessionScope.member.id}'
 
+		}),
+		success : function(result) {
+			console.log(result);
+			alert("수정되었습니다.");
+			$('#content').val("");
+			updateCno=null;
+			getAllList();
+		}
+	})
+}else{
 							$.ajax({
 								method : 'post',
 								url : '/miso/comment/write',
-								headers :{
-								"Content-type":"application/json",
-							//	"X-HTTP-Method-Override":"POST"
+								headers : {
+									"Content-type" : "application/json",
 								},
 								data : JSON.stringify({
-									bno: ${boardVO.bno},
-									content: $('#content').val(),
-									name:'${sessionScope.member.name}',
-									id :'${sessionScope.member.id}'
-									
+									bno : '${boardVO.bno}',
+									content : $('#content').val(),
+									name : '${sessionScope.member.name}',
+									id : '${sessionScope.member.id}'
+
 								}),
 								success : function(result) {
 									console.log(result);
 									alert("등록되었습니다.");
+									$('#content').val("");
 									getAllList();
 								}
 							})
-
+}
 						});
-						$('#cmt_update').on(
-								'click',
-								function() {
-									location.href = "/miso/comment/update/"
-											+ this.value;
-								});
-
-						$('#cmt_delete').on(
-								'click',
-								function() {
-									location.href = "/miso/comment/delete/"
-											+ this.value;
-								});
 
 						function getAllList() {
-							alert('${boardVO.bno}');
-							$.getJSON(
-											"/miso/comment/all/" + '${boardVO.bno}',
+							$.getJSON("/miso/comment/all/"+ '${boardVO.bno}',
 											function(data) {
 												var str = "";
 												$(data)

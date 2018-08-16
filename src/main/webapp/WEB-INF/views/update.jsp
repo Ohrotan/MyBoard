@@ -94,9 +94,10 @@ button:hover {
 	</div>
 </body>
 <script type="text/javascript">
-$(document).ready(function() {
-	$('#cancel').on('click', function() {
-		location.href = 'board';
+	$(document).ready(function() {
+		$('#cancel').on('click', function() {
+			location.href = 'board';
+		});
 	});
-	</script>
+</script>
 </html>
