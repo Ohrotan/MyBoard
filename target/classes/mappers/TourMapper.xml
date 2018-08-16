@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssu.miso.persistence.TourMapper">
+
+	<resultMap type="com.ssu.miso.vo.TourVO" id="result">
+		<id property="tno" column="tno" />
+		<id property="school" column="school" />
+		<id property="visitdate" column="visitdate" />
+		<id property="name" column="name" />
+		<id property="phone" column="phone" />
+		<id property="pnum" column="pnum" />
+	</resultMap>
+
+	<sql id="search">
+		<if test="searchType!=null">
+			<if test="searchType =='s'.toString()">
+				and school like CONCAT(CONCAT('%',#{keyword}),'%')
+			</if>
+			<if test="searchType =='na'.toString()">
+				and name like CONCAT(CONCAT('%',#{keyword}),'%')
+			</if>
+			<if test="searchType =='p'.toString()">
+				and phone like CONCAT(CONCAT('%',#{keyword}),'%')
+			</if>
+			<if test="searchType =='d'.toString()">
+				and visitdate like CONCAT(CONCAT('%',#{keyword}),'%')
+			</if>
+			<if test="searchType =='sn'.toString()">
+				and (school like CONCAT(CONCAT('%',#{keyword}),'%') or
+				name
+				like CONCAT(CONCAT('%',#{keyword}),'%'))
+			</if>
+		</if>
+	</sql>
+
+	<select id="countPaging" resultType="int">
+		<![CDATA[
+		SELECT count(tno)
+		FROM tbl_tour
+		WHERE tno>0
+		]]>
+	</select>
+
+	<select id="listSearch" resultType="com.ssu.miso.vo.TourVO">
+	<![CDATA[
+		SELECT * FROM (
+		SELECT ROWNUM AS RNUM, Z.* FROM (
+		SELECT * FROM tbl_tour WHERE tno>0 
+		]]>
+		<include refid="search"></include>
+			<![CDATA[ORDER BY tno DESC
+		) Z WHERE ROWNUM <= #{pageStart}+#{perPageNum}
+		) WHERE RNUM >= #{pageStart}
+	]]>
+
+	</select>
+
+	<select id="listSearchCount" resultType="int">
+	<![CDATA[
+		SELECT count(tno)
+		FROM tbl_tour
+		WHERE tno>0]]>
+		<include refid="search"></include>
+
+	</select>
+
+	<select id="read" parameterType="int"
+		resultType="com.ssu.miso.vo.TourVO">
+		SELECT * FROM tbl_tour
+		WHERE tno = #{tno}
+	</select>
+
+	<insert id="create" parameterType="com.ssu.miso.vo.TourVO">
+		INSERT INTO tbl_tour VALUES
+		(1,#{school},#{name},#{phone},#{visitdate},#{pnum})
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		DELETE FROM tbl_tour WHERE
+		tno=#{tno}
+	</delete>
+
+</mapper>

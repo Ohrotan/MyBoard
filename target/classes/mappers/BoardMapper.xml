@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssu.miso.persistence.BoardMapper">
+
+	<resultMap type="com.ssu.miso.vo.BoardVO" id="result">
+		<id property="bno" column="bno" />
+		<id property="school" column="school" />
+		<id property="visitdate" column="visitdate" />
+		<id property="content" column="content" />
+		<id property="pic" column="pic" />
+		<id property="regdate" column="regdate" />
+	</resultMap>
+
+	<sql id="search">
+		<if test="searchType!=null">
+			<if test="searchType =='s'.toString()">
+				and school like CONCAT(CONCAT('%',#{keyword}),'%')
+			</if>
+			<if test="searchType =='c'.toString()">
+				and content like CONCAT(CONCAT('%',#{keyword}),'%')
+			</if>
+			<if test="searchType =='sc'.toString()">
+				and (school like CONCAT(CONCAT('%',#{keyword}),'%') or
+				content
+				like CONCAT(CONCAT('%',#{keyword}),'%'))
+			</if>
+		</if>
+	</sql>
+
+	<select id="countPaging" resultType="int">
+		<![CDATA[
+		SELECT count(bno)
+		FROM tbl_board
+		WHERE bno>0
+		]]>
+	</select>
+
+	<select id="listSearch" resultType="com.ssu.miso.vo.BoardVO">
+	<![CDATA[
+		SELECT * FROM (
+		SELECT ROWNUM AS RNUM, Z.* FROM (
+		SELECT * FROM tbl_board WHERE bno>0 
+		]]>
+		<include refid="search"></include>
+			<![CDATA[ORDER BY bno DESC
+		) Z WHERE ROWNUM <= #{pageStart}+#{perPageNum}
+		) WHERE RNUM >= #{pageStart}
+	]]>
+
+	</select>
+
+	<select id="listSearchCount" resultType="int">
+	<![CDATA[
+		SELECT count(bno)
+		FROM tbl_board
+		WHERE bno>0]]>
+		<include refid="search"></include>
+
+	</select>
+
+	<select id="read" parameterType="int"
+		resultType="com.ssu.miso.vo.BoardVO">
+		SELECT * FROM tbl_board
+		WHERE bno=#{bno}
+	</select>
+
+	<insert id="create" parameterType="com.ssu.miso.vo.BoardVO">
+		INSERT INTO tbl_board VALUES
+		(1,#{school},#{visitdate},#{pic},#{content},SYSDATE)
+	</insert>
+
+	<update id="updateAll" parameterType="com.ssu.miso.vo.BoardVO">
+		UPDATE tbl_board SET
+		school=#{school},
+		content=#{content},
+		pic=#{pic},
+		visitdate=#{visitdate}
+		WHERE
+		bno=#{bno}
+	</update>
+	<update id="update" parameterType="com.ssu.miso.vo.BoardVO">
+		UPDATE tbl_board SET
+		school=#{school},
+		content=#{content},
+		visitdate=#{visitdate}
+		WHERE
+		bno=#{bno}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		DELETE FROM tbl_board WHERE
+		bno=#{bno}
+	</delete>
+
+</mapper>
